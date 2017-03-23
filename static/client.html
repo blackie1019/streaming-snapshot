@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>Socket.IO Stream</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<!--<script src="//cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js"></script>-->
+	<script src="//cdn.socket.io/socket.io-1.4.3.js"></script>
+	<style>
+	html, body {
+		margin: 0;
+	}
+	#stream {
+		display: inline-block;
+		float: left;
+		width: 720px;
+		height: 480px;
+		border: 1px solid #000;
+		margin: 0px;
+	}
+	#streamCanvas {
+		display: inline-block;
+		float: left;
+		width: 720px;
+		height: 480px;
+		border: 1px solid #000;
+		margin: 0px;
+	}
+	#streamImg {
+		display: none;
+	}
+	
+	#streamImg, #streamCanvas {
+		webkit-transform: translateZ(0);
+		-moz-transform: translateZ(0);
+		-ms-transform: translateZ(0);
+		-o-transform: translateZ(0);
+		transform: translateZ(0);
+	}
+	/*
+	*/
+	</style>
+</head>
+<body>
+	<img id="streamImg" ></img>
+	<!--
+	<div id="stream"></div>
+	-->
+	<canvas id="streamCanvas" width="720" height="480"></canvas>
+	<div id="first" class="box">
+		<div></div>
+		<form>
+			<input autocomplete="off" value="Type here..."></input>
+		</form>
+	</div>
+	
+	<script>
+	$('#first input').focus();
+	var div  = $('#first div');
+	var inp  = $('#first input');
+	var form = $('#first form');
+	
+	var print = function(m, p) {
+		p = (p === undefined) ? '' : JSON.stringify(p);
+		div.append($("<code>").text(m + ' ' + p));
+		div.append($("<br>"));
+		div.scrollTop(div.scrollTop()+10000);
+	};
+	
+	form.submit(function() {
+		print('[ ] sending', inp.val());
+		socket.emit('msg', { body: inp.val() });
+		inp.val('');
+		return false;
+	});
+	
+	
+	var streamCtx = $('#streamCanvas')[0].getContext('2d');
+	$('#streamImg').load(function() {
+		URL.revokeObjectURL(this.src);
+		streamCtx.drawImage(this, 0, 0, 720, 480);
+	});
+	
+	
+	var socket_url = '/echo';
+	var socket = new io(socket_url);
+	
+	socket.on('connect', function() {
+		print('[*] connect');
+	});
+	socket.on('disconnect', function() {
+		print('[*] disconnect');
+	});
+	socket.on('msg', function(data) {
+		print('[.] message', data.body);
+	});
+	socket.on('stream', function(data) {
+		if (data.body) {
+			// var str = String.fromCharCode.apply(null, new Uint8Array(data.body));
+			// $('#stream').css('background', 'transparent url(data:image/jpeg;base64,'+btoa(str)+') top left / 100% 100% no-repeat');
+			// $('#streamImg').attr('src', 'data:image/jpeg;base64,'+btoa(str)+'');
+			var blob = new Blob([data.body], {type: 'application/octet-binary'});
+			var url = URL.createObjectURL(blob);
+			$('#streamImg').attr('src', url);
+		}
+		socket.emit('ack', { timestamp: data.timestamp });
+	});
+	
+	</script>
+</body>
+</html>

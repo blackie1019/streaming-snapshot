@@ -2,6 +2,10 @@
 An architecture to capture streaming snapshot from a stand alone service
 
 ## HLD ##
+- Default Pub/Sub for Client Browser:
+    ![HLD_Default](https://raw.githubusercontent.com/blackie1019/streaming-snapshot/master/References/HLD_Default.png)
+- Network Bandwith/Throughput Concern:
+    ![HLD](https://raw.githubusercontent.com/blackie1019/streaming-snapshot/master/References/HLD.png)
 
 ## Prerequisite ##
 
@@ -11,9 +15,9 @@ An architecture to capture streaming snapshot from a stand alone service
 
 ## Setup ##
 
-1. using npm restore packages
+1. using npm restore packages.
         npm install
-2. start applicaion
+2. start applicaion.
         npm start
-
-3. Open browser and go to client url(default is [http://localhost:9999/client.html](http://localhost:9999/client.html)) to watch change.
+3. Open Virtual Webcam to simulate streaming source from Desktop Screen. 
+4. Open browser and go to client url(default is [http://localhost:9999/client.html](http://localhost:9999/client.html)) to watch change.

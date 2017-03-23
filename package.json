@@ -1,0 +1,16 @@
+{
+	"name": "nodejs_ffmpeg",
+	"description": "nodejs ffmpeg",
+	"version": "0.0.0",
+	"scripts": {
+		"start": "node ffmpeg_fluent_node_socketio.js"
+	},
+	"dependencies": {
+		"connect": "latest",
+		"node-static": "latest",
+		"sockjs": "latest",
+		"fluent-ffmpeg": "latest",
+		"lz-string": "latest",
+		"socket.io": "latest"
+	}
+}
