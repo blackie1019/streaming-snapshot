@@ -14,7 +14,6 @@ http://stackoverflow.com/questions/23309956/javascript-creating-an-image-from-bi
 process.env.FFMPEG_PATH = "E:\\4.Tools\\ffmpeg\\bin\\ffmpeg.exe";
 
 var http = require('http');
-// var sockjs = require('sockjs');
 var socket_io = require('socket.io');
 var node_static = require('node-static');
 var childProcess = require('child_process');
